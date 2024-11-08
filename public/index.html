@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html data-theme="light">
+<head>
+    <title>WhatsApp Bot Monitor</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/css/output.css" rel="stylesheet">
+    <script src="/js/qrcode.min.js"></script>
+    <script src="/js/monitor.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="mb-8 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800">WhatsApp Bot Monitor</h1>
+                <p class="text-gray-600">Real-time message monitoring dashboard</p>
+            </div>
+            <button
+                id="logoutBtn"
+                class="btn btn-error">
+                Logout
+            </button>
+        </div>
+
+        <!-- API Key Setup -->
+        <div class="mb-8">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">API Key</span>
+                </label>
+                <div class="flex gap-2">
+                    <input type="password" id="apiKey" placeholder="Enter your API key" 
+                           class="input input-bordered flex-grow">
+                    <button id="saveApiKey" class="btn btn-primary">Save Key</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="stats shadow">
+                <div class="stat">
+                    <div class="stat-title">Total Messages</div>
+                    <div class="stat-value" id="totalMessages">0</div>
+                </div>
+            </div>
+            <div class="stats shadow">
+                <div class="stat">
+                    <div class="stat-title">Media Messages</div>
+                    <div class="stat-value" id="mediaMessages">0</div>
+                </div>
+            </div>
+            <div class="stats shadow">
+                <div class="stat">
+                    <div class="stat-title">Connection Status</div>
+                    <div class="stat-value">
+                        <span id="connectionStatus" class="text-success">Connected</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message Container -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-semibold">Messages</h2>
+                <button id="clearMessages" class="btn btn-sm btn-outline btn-error">
+                    Clear Messages
+                </button>
+            </div>
+            
+            <!-- Messages Area -->
+            <div id="messages" class="h-[600px] overflow-y-auto space-y-4">
+                <!-- Messages will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Message Sender Form -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mt-8">
+            <h2 class="text-xl font-semibold mb-4">Send Message</h2>
+            <form id="messageForm" class="space-y-4">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Phone Number</span>
+                    </label>
+                    <input type="text" id="number" placeholder="Example: 6281234567890" 
+                           class="input input-bordered w-full" required>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Message</span>
+                    </label>
+                    <textarea id="message" placeholder="Enter your message" 
+                              class="textarea textarea-bordered w-full" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Send Message</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="api-key-setup mb-4" style="display: none;">
+        <input type="text" id="apiKeyInput" placeholder="Enter API Key" class="input input-bordered w-full max-w-xs" />
+        <button id="saveApiKeyBtn" class="btn btn-primary">Save API Key</button>
+    </div>
+</body>
+</html> 
