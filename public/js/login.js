@@ -13,11 +13,13 @@ const handleStatusUpdate = (data) => {
     const qrContainer = document.getElementById('qrContainer');
     const qrCode = document.getElementById('qrCode');
     const connectionStatus = document.getElementById('connectionStatus');
+    const loadingSpinner = document.getElementById('loadingSpinner');
 
     switch (data.status) {
         case 'qr':
             qrContainer.style.display = 'block';
             connectionStatus.textContent = 'Please scan the QR code';
+            loadingSpinner.classList.add('hidden');
             
             // Clear previous QR code
             qrCode.innerHTML = '';
@@ -27,7 +29,9 @@ const handleStatusUpdate = (data) => {
                 text: data.qr,
                 width: 256,
                 height: 256,
-                correctLevel: QRCode.CorrectLevel.L
+                correctLevel: QRCode.CorrectLevel.L,
+                callback: () => {
+                }
             });
             break;
 
@@ -39,6 +43,7 @@ const handleStatusUpdate = (data) => {
         case 'logged_out':
             connectionStatus.textContent = 'Waiting for QR code...';
             qrCode.innerHTML = '';
+            loadingSpinner.classList.remove('hidden');
             break;
     }
 };

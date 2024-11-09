@@ -1,4 +1,5 @@
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
+const fs = require('fs');
 
 let client;
 let isReady = false;
@@ -9,11 +10,16 @@ let qrCodeScanned = false;
 
 // Message handler function
 const handleMessage = async (message) => {
+    if (!isReady) {
+        console.error('Client is not ready to handle messages.');
+        return;
+    }
+
     try {
         // Get message details
         const chat = await message.getChat();
         const contact = await message.getContact();
-        
+
         const messageData = {
             from: message.from,
             body: message.body,
@@ -61,7 +67,7 @@ const handleMessage = async (message) => {
 const handleCommands = async (message) => {
     const command = message.body.toLowerCase();
 
-    switch(command) {
+    switch (command) {
         case '!help':
             await message.reply(
                 '*Available Commands*\n' +
@@ -90,7 +96,7 @@ const handleCommands = async (message) => {
 const initializeWhatsApp = () => {
     isReady = false;
     qrCodeScanned = false;
-    
+
     client = new Client({
         authStrategy: new LocalAuth(),
         puppeteer: {
@@ -113,7 +119,7 @@ const initializeWhatsApp = () => {
         console.log('QR Code received, waiting for scan...');
         qrCode = qr;
         qrCodeScanned = false;
-        
+
         // Send the raw QR code directly
         statusCallbacks.forEach(callback => {
             callback({ status: 'qr', qr: qr });
@@ -142,7 +148,7 @@ const initializeWhatsApp = () => {
         statusCallbacks.forEach(callback => {
             callback({ status: 'ready' });
         });
-        
+
         // Fetch chat history after client is ready
         // await fetchChatHistory();
     });
@@ -153,7 +159,7 @@ const initializeWhatsApp = () => {
         statusCallbacks.forEach(callback => {
             callback({ status: 'disconnected', reason });
         });
-        
+
         // Attempt to reinitialize after a delay
         setTimeout(() => {
             if (!isReady) {
@@ -257,10 +263,14 @@ const logout = async () => {
         statusCallbacks.forEach(callback => {
             callback({ status: 'logged_out' });
         });
-        
+
         // Clear message callbacks
         messageCallbacks.clear();
-        
+
+        // delete .wwebjs_auth and .webjs_cache
+        fs.rmSync('.wwebjs_auth', { recursive: true, force: true });
+        fs.rmSync('.webjs_auth', { recursive: true, force: true });
+
         // Reinitialize the client after a short delay
         setTimeout(() => {
             initializeWhatsApp();
@@ -279,7 +289,7 @@ const fetchChatHistory = async () => {
         for (const chat of chats) {
             // Fetch last 50 messages from each chat
             const messages = await chat.fetchMessages({ limit: 50 });
-            
+
             // Process each message through the existing handler
             for (const message of messages) {
                 await handleMessage(message);

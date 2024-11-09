@@ -68,7 +68,7 @@ const checkWhatsAppAuth = (req, res, next) => {
     // If not authenticated and trying to access any other page
     if (!status.isReady) {
         const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-        return res.redirect(`${protocol}://${req.get('host')}/login.html`);
+        // return res.redirect(`${protocol}://${req.get('host')}/login.html`);
     }
     
     next();
