@@ -1,5 +1,4 @@
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
-const qrcode = require('qrcode-terminal');
 
 let client;
 let isReady = false;

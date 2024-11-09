@@ -79,6 +79,30 @@ function updateStats() {
     }
 }
 
+// Add this function after the updateStats function
+function checkStatus() {
+    fetch('/api/bot/status', {
+        headers: {
+            'X-API-Key': localStorage.getItem('apiKey')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Status check failed');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (!data.isAuthenticated) {
+            window.location.href = '/login.html';
+        }
+        console.log('Status check:', data);
+    })
+    .catch(error => {
+        console.error('Error checking status:', error);
+    });
+}
+
 // Initialize WebSocket with error handling
 const ws = new WebSocket(`ws://${window.location.hostname}:${window.location.port}`);
 
@@ -183,6 +207,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoutButton) {
         logoutButton.addEventListener('click', logoutWhatsApp);
     }
+
+    // Add periodic status check
+    checkStatus(); // Initial check
+    setInterval(checkStatus, 30000); // Check every 30 seconds
 });
 
 // API Key Management
