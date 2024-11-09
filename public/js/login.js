@@ -19,18 +19,20 @@ const handleStatusUpdate = (data) => {
             qrContainer.style.display = 'block';
             connectionStatus.textContent = 'Please scan the QR code';
             
-            // Generate QR code
+            // Clear previous QR code
             qrCode.innerHTML = '';
+            
+            // Generate QR code
             new QRCode(qrCode, {
                 text: data.qr,
                 width: 256,
-                height: 256
+                height: 256,
+                correctLevel: QRCode.CorrectLevel.L
             });
             break;
 
         case 'ready':
             connectionStatus.textContent = 'Connected! Redirecting...';
-            // Redirect to monitor page
             window.location.href = '/';
             break;
 

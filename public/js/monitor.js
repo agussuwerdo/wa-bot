@@ -9,6 +9,7 @@ let connectionStatusElement = null;
 let clearMessagesButton = null;
 let qrCodeElement = null;
 let messageForm = null;
+let logoutButton = null;
 
 // Helper function for escaping HTML
 function escapeHtml(text) {
@@ -78,8 +79,18 @@ function updateStats() {
     }
 }
 
-// Initialize WebSocket
+// Initialize WebSocket with error handling
 const ws = new WebSocket(`ws://${window.location.hostname}:${window.location.port}`);
+
+ws.onerror = (error) => {
+    console.error('WebSocket Error:', error);
+    if (connectionStatusElement) {
+        connectionStatusElement.textContent = 'Connection Error';
+        connectionStatusElement.className = 'text-error';
+    }
+    // Redirect to login if connection fails
+    window.location.href = '/login.html';
+};
 
 // WebSocket event handlers
 ws.onmessage = (event) => {
@@ -95,7 +106,7 @@ ws.onmessage = (event) => {
         if (qrCodeElement) qrCodeElement.style.display = 'none';
         window.location.href = '/';
     } else if (data.status === 'logged_out') {
-        window.location.href = '/login.html';
+        window.location.href = window.location.protocol + '//' + window.location.host + '/login.html';
     } else if (data.type) {
         handleNewMessage(data);
     }
@@ -125,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
     clearMessagesButton = document.getElementById('clearMessages');
     qrCodeElement = document.getElementById('qrCode');
     messageForm = document.getElementById('messageForm');
+    logoutButton = document.getElementById('logoutBtn');
 
     // Initialize message form handler
     if (messageForm) {
@@ -168,6 +180,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    if (logoutButton) {
+        logoutButton.addEventListener('click', logoutWhatsApp);
+    }
 });
 
 // API Key Management
@@ -195,12 +210,12 @@ async function logoutWhatsApp() {
         if (!response.ok) {
             if (response.status === 401) {
                 console.error('API key invalid or missing');
-                window.location.href = '/login.html';
                 return;
             }
             throw new Error('Logout failed');
         }
 
+        window.location.href = window.location.protocol + '//' + window.location.host + '/login.html';
         console.log('Logout successful');
     } catch (error) {
         console.error('Error during logout:', error);

@@ -115,15 +115,9 @@ const initializeWhatsApp = () => {
         qrCode = qr;
         qrCodeScanned = false;
         
-        // Convert QR code to base64 image
-        const qrImage = require('qrcode');
-        qrImage.toDataURL(qr, (err, url) => {
-            if (!err) {
-                const base64Data = url.replace('data:image/png;base64,', '');
-                statusCallbacks.forEach(callback => {
-                    callback({ status: 'qr', qr: base64Data });
-                });
-            }
+        // Send the raw QR code directly
+        statusCallbacks.forEach(callback => {
+            callback({ status: 'qr', qr: qr });
         });
     });
 
@@ -253,13 +247,22 @@ const onStatus = (callback) => {
 
 const logout = async () => {
     if (client) {
-        await client.destroy();
+        await client.logout();
         client = null;
         isReady = false;
         qrCode = null;
+        qrCodeScanned = false;
         statusCallbacks.forEach(callback => {
             callback({ status: 'logged_out' });
         });
+        
+        // Clear message callbacks
+        messageCallbacks.clear();
+        
+        // Reinitialize the client after a short delay
+        setTimeout(() => {
+            initializeWhatsApp();
+        }, 1000);
     }
 };
 

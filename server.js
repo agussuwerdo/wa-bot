@@ -54,37 +54,31 @@ initializeWebSocket(server);
 
 // Middleware to check WhatsApp connection status
 const checkWhatsAppAuth = (req, res, next) => {
-    const { getClientStatus } = require('./services/whatsappService');
+    const { getClientStatus } = require('./src/services/whatsappService');
     const status = getClientStatus();
     
     // Always allow access to login page and its assets
-    if (req.path === '/login.html' || req.path.startsWith('/css/') || req.path.startsWith('/js/')) {
+    if (req.path === '/login.html' || 
+        req.path.startsWith('/css/') || 
+        req.path.startsWith('/js/') ||
+        req.path === '/api/bot/logout') {
         return next();
     }
     
     // If not authenticated and trying to access any other page
     if (!status.isReady) {
-        return res.redirect('/login.html');
+        const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+        return res.redirect(`${protocol}://${req.get('host')}/login.html`);
     }
     
     next();
 };
 
-// Apply middleware to all routes except API and static files
-app.use((req, res, next) => {
-    res.setHeader(
-        'Content-Security-Policy',
-        "default-src 'self'; " +
-        "script-src 'self' https://cdn.jsdelivr.net; " +
-        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
-        "img-src 'self' data: https:; " +
-        "connect-src 'self' ws: wss:;"
-    );
-    next();
-});
+// Apply authentication check before static files
+app.use(checkWhatsAppAuth);
 
-// Serve static files
-app.use(express.static('public'));
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
