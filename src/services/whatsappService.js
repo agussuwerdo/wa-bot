@@ -135,13 +135,16 @@ const initializeWhatsApp = () => {
         });
     });
 
-    client.on('ready', () => {
+    client.on('ready', async () => {
         console.log('WhatsApp client is ready!');
         isReady = true;
         qrCode = null;
         statusCallbacks.forEach(callback => {
             callback({ status: 'ready' });
         });
+        
+        // Fetch chat history after client is ready
+        // await fetchChatHistory();
     });
 
     client.on('disconnected', async (reason) => {
@@ -262,6 +265,28 @@ const logout = async () => {
         setTimeout(() => {
             initializeWhatsApp();
         }, 1000);
+    }
+};
+
+// Add this function after initializeWhatsApp
+const fetchChatHistory = async () => {
+    if (!client || !isReady) {
+        throw new Error('WhatsApp client not ready');
+    }
+
+    try {
+        const chats = await client.getChats();
+        for (const chat of chats) {
+            // Fetch last 50 messages from each chat
+            const messages = await chat.fetchMessages({ limit: 50 });
+            
+            // Process each message through the existing handler
+            for (const message of messages) {
+                await handleMessage(message);
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching chat history:', error);
     }
 };
 
