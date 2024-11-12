@@ -1,14 +1,13 @@
 # WhatsApp Bot Monitor
 
-A real-time WhatsApp message monitoring dashboard built with modern web technologies. This project demonstrates proficiency in building responsive web applications with real-time capabilities.
+A real-time WhatsApp message monitoring dashboard built on node.js using whatsapp-web.js.
 
 ## 🚀 Features
 
 - **Real-time Message Monitoring**: Live updates of incoming WhatsApp messages
 - **Message Statistics**: Track total and media message counts
-- **Responsive Design**: Mobile-friendly WhatsApp-like interface
-- **Message Management**: Send messages directly from the dashboard
-- **Clean UI**: Modern, intuitive interface with WhatsApp-inspired design
+- **Send Messages**: Send messages directly from the dashboard
+- **Receive Messages**: Receive messages from WhatsApp
 
 ## 💻 Technologies Used
 
@@ -26,11 +25,10 @@ A real-time WhatsApp message monitoring dashboard built with modern web technolo
 
 - **UI Components**:
   - DaisyUI for enhanced UI components
-  - Custom WhatsApp-like design system
+  - Tailwind CSS for styling
 
 ## 🎯 Technical Highlights
 
-- **Responsive Layout**: Fluid design that adapts to different screen sizes
 - **Real-time Updates**: WebSocket implementation for instant message updates
 - **Efficient Message Handling**: Smart message queue system with a 100-message display limit
 - **Security**: HTML escaping for safe message rendering
@@ -61,37 +59,24 @@ PORT=3000
 NODE_ENV=development
 ```
 
-## 🎨 Design Philosophy
-
-The project follows WhatsApp's design language while maintaining its own identity:
-- Clean, minimalist interface
-- Intuitive message layout
-- Responsive design principles
-- Accessibility considerations
-
-## 💡 Skills Demonstrated
-
 - **Frontend Development**
-  - Modern HTML5 & CSS3
+  - Tailwind CSS
   - JavaScript ES6+
   - Real-time data handling
-  - Responsive design implementation
 
 - **UI/UX Design**
   - Component-based design
-  - User-friendly interface
   - WhatsApp-inspired patterns
-
-- **Best Practices**
-  - Clean code principles
-  - Performance optimization
-  - Security considerations
-  - Modern web development patterns
 
 ## 📸 Screenshots
 
 ![Login](./screenshots/login.png)
 ![Index](./screenshots/index.png)
+
+## 🙏 Acknowledgments
+
+- [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js) - The excellent WhatsApp client library that powers this project's core functionality
+- Built with [Node.js](https://nodejs.org/) and [Express.js](https://expressjs.com/)
 
 ## 📝 License
 
