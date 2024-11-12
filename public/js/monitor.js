@@ -81,11 +81,7 @@ function updateStats() {
 
 // Add this function after the updateStats function
 function checkStatus() {
-    fetch('/api/bot/status', {
-        headers: {
-            'X-API-Key': localStorage.getItem('apiKey')
-        }
-    })
+    fetch('/api/bot/status')
     .then(response => {
         if (!response.ok) {
             throw new Error('Status check failed');
@@ -174,8 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await fetch('/api/bot/send', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'X-API-Key': localStorage.getItem('apiKey')
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ number, message })
                 });
@@ -213,33 +208,17 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(checkStatus, 30000); // Check every 30 seconds
 });
 
-// API Key Management
-function saveApiKey() {
-    const apiKey = document.getElementById('apiKeyInput').value;
-    if (apiKey) {
-        localStorage.setItem('apiKey', apiKey);
-        location.reload();
-    }
-}
-
 // Logout functionality
 async function logoutWhatsApp() {
-    const apiKey = localStorage.getItem('apiKey');
-    
     try {
         const response = await fetch('/api/bot/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-API-Key': apiKey
             }
         });
         
         if (!response.ok) {
-            if (response.status === 401) {
-                console.error('API key invalid or missing');
-                return;
-            }
             throw new Error('Logout failed');
         }
 

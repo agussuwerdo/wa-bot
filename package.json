@@ -4,21 +4,29 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "dev": "concurrently \"nodemon server.js\" \"npm run watch-css\"",
+    "watch-css": "tailwindcss -i ./public/css/style.css -o ./public/css/output.css --watch",
+    "build": "tailwindcss -i ./public/css/style.css -o ./public/css/output.css"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "nodemon": "^3.1.5",
+    "@tailwindcss/forms": "^0.5.9",
     "cors": "^2.8.5",
+    "daisyui": "^4.12.14",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "helmet": "^8.0.0",
+    "nodemon": "^3.1.5",
     "qrcode": "^1.5.4",
     "qrcode-terminal": "^0.12.0",
+    "tailwindcss": "^3.4.14",
     "whatsapp-web.js": "^1.26.0",
     "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
   }
 }

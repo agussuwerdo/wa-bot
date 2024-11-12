@@ -150,7 +150,7 @@ const initializeWhatsApp = () => {
         });
 
         // Fetch chat history after client is ready
-        // await fetchChatHistory();
+        await fetchChatHistory();
     });
 
     client.on('disconnected', async (reason) => {

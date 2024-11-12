@@ -20,6 +20,7 @@ const handleStatusUpdate = (data) => {
             qrContainer.style.display = 'block';
             connectionStatus.textContent = 'Please scan the QR code';
             loadingSpinner.classList.add('hidden');
+            qrCode.classList.remove('hidden');
             
             // Clear previous QR code
             qrCode.innerHTML = '';

@@ -32,21 +32,13 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Add this before your routes
-const authenticateAPI = (req, res, next) => {
-    const apiKey = req.headers['x-api-key'];
-    
-    if (!apiKey || apiKey !== process.env.API_KEY) {
-        return res.status(401).json({ 
-            error: 'Unauthorized',
-            message: 'Invalid or missing API key'
-        });
-    }
-    
+const logRequest = (req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
     next();
 };
 
 // API routes
-app.use('/api/bot', authenticateAPI, botRoutes);
+app.use('/api/bot', logRequest, botRoutes);
 
 // Initialize services
 initializeWhatsApp();
