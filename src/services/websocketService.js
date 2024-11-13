@@ -1,5 +1,5 @@
 const WebSocket = require('ws');
-const { onMessage, onStatus } = require('./whatsappService');
+const { onMessage, onStatus, onMessages } = require('./whatsappService');
 
 let wss;
 
@@ -16,6 +16,13 @@ const initializeWebSocket = (server) => {
             }
         });
 
+        // Subscribe to chat history
+        const unsubscribeMessages = onMessages((messages) => {
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ type: 'chat_history', messages }));
+            }
+        });
+
         // Subscribe to status updates
         const unsubscribeStatus = onStatus((statusData) => {
             if (ws.readyState === WebSocket.OPEN) {
@@ -25,6 +32,7 @@ const initializeWebSocket = (server) => {
 
         ws.on('close', () => {
             unsubscribeMessage();
+            unsubscribeMessages();
             unsubscribeStatus();
             console.log('Client disconnected');
         });

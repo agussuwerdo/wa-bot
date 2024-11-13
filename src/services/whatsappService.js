@@ -4,6 +4,7 @@ const fs = require('fs');
 let client;
 let isReady = false;
 let messageCallbacks = new Set();
+let messagesCallbacks = new Set();
 let qrCode = null;
 let statusCallbacks = new Set();
 let qrCodeScanned = false;
@@ -30,6 +31,7 @@ const handleMessage = async (message) => {
             author: chat.isGroup ? message.author : message.from,
             senderName: contact.pushname || contact.name || 'Unknown',
             chatName: chat.name,
+            contact: contact,
         };
 
         // If message has media
@@ -150,7 +152,13 @@ const initializeWhatsApp = () => {
         });
 
         // Fetch chat history after client is ready
-        await fetchChatHistory();
+        const messages = await fetchChatHistory();            // Process each message through the existing handler
+        // for (const message of messages) {
+        //     await handleMessage(message);
+        // }
+        messagesCallbacks.forEach(callback => {
+            callback(messages);
+        });
     });
 
     client.on('disconnected', async (reason) => {
@@ -217,6 +225,7 @@ const initializeWhatsApp = () => {
         sendMessage,
         getClientStatus,
         onMessage,
+        onMessages,
         getQRCode,
         onStatus,
         logout
@@ -227,6 +236,11 @@ const initializeWhatsApp = () => {
 const onMessage = (callback) => {
     messageCallbacks.add(callback);
     return () => messageCallbacks.delete(callback); // Return unsubscribe function
+};
+
+const onMessages = (callback) => {
+    messagesCallbacks.add(callback);
+    return () => messagesCallbacks.delete(callback);
 };
 
 const sendMessage = async (number, message) => {
@@ -266,7 +280,7 @@ const logout = async () => {
 
         // Clear message callbacks
         messageCallbacks.clear();
-
+        messagesCallbacks.clear();
         // delete .wwebjs_auth and .webjs_cache
         fs.rmSync('.wwebjs_auth', { recursive: true, force: true });
         fs.rmSync('.webjs_auth', { recursive: true, force: true });
@@ -285,16 +299,18 @@ const fetchChatHistory = async () => {
     }
 
     try {
+        let allMessages = [];
         const chats = await client.getChats();
         for (const chat of chats) {
             // Fetch last 50 messages from each chat
             const messages = await chat.fetchMessages({ limit: 50 });
-
-            // Process each message through the existing handler
-            for (const message of messages) {
-                await handleMessage(message);
-            }
+            const chatData = {
+                ...chat,
+                messages: messages
+            };
+            allMessages.push(chatData);
         }
+        return allMessages;
     } catch (error) {
         console.error('Error fetching chat history:', error);
     }
@@ -305,6 +321,7 @@ module.exports = {
     sendMessage,
     getClientStatus,
     onMessage,
+    onMessages,
     getQRCode,
     onStatus,
     logout
