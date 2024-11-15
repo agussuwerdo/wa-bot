@@ -1,41 +1,32 @@
-# Dependencies
-node_modules/
+# WhatsApp Web cache
+.wwebjs_*
+
+# Node.js
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 package-lock.json
 yarn.lock
+
+# Logs
+logs
+*.log
+*.log.*
+pids
+*.pid
+*.seed
+*.pid.lock
 
 # Environment variables
 .env
 .env.local
 .env.*.local
 
-# WhatsApp Web Client files
-.wwebjs_auth/
-.wwebjs_cache/
-
-# Logs
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Editor directories and files
-.idea/
-.vscode/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+# public folder
+/public/js/*
+/public/styles/*
+!/public/index.html
 
 # Build output
 dist/
@@ -46,13 +37,25 @@ out/
 debug/
 .debug/
 
-# Test coverage
-coverage/
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor directories and files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
 # Temporary files
 *.tmp
 *.temp
 .cache/
-
-# Local development files
-*.local

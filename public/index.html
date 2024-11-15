@@ -1,89 +1,13 @@
 <!DOCTYPE html>
-<html data-theme="light">
+<html lang="en">
 <head>
-    <title>WhatsApp Bot Monitor</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/css/output.css" rel="stylesheet">
-    <script src="/js/qrcode.min.js"></script>
-    <script src="/js/monitor.js"></script>
+    <title>WhatsApp</title>
+    <link href="/styles/output.css" rel="stylesheet">
 </head>
-<body class="bg-[#eae6df] h-screen">
-    <div class="mx-auto h-screen p-4">
-        <div class="h-[calc(100vh-2rem)] w-full flex flex-col">
-            <!-- Header -->
-            <div class="bg-[#00a884] text-white p-4 rounded-t-lg flex justify-between items-center flex-wrap">
-                <div>
-                    <h1 class="text-2xl font-semibold">WhatsApp Bot Monitor</h1>
-                    <p class="text-sm opacity-90">Real-time message monitoring</p>
-                </div>
-                <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
-                    Logout
-                </button>
-            </div>
-
-            <!-- Main Content Area -->
-            <div class="bg-white flex-1 w-full flex rounded-b-lg shadow-lg overflow-hidden">
-                <!-- Chat List Sidebar -->
-                <div class="w-80 min-w-[320px] flex flex-col border-r border-gray-200">
-                    <!-- Search Bar -->
-                    <div class="p-2 bg-[#f0f2f5]">
-                        <input type="text" id="chatSearch" placeholder="Search or start new chat" 
-                               class="w-full p-2 rounded-lg bg-white text-sm focus:outline-none">
-                    </div>
-                    
-                    <!-- Chat List -->
-                    <div id="chatList" class="flex-1 overflow-y-auto bg-white">
-                        <!-- Chats will be inserted here -->
-                    </div>
-                    
-                    <!-- Stats Cards -->
-                    <div class="divide-y divide-gray-200 bg-white border-t border-gray-200">
-                        <div class="p-4 flex justify-between items-center">
-                            <span class="font-semibold">Total Messages</span>
-                            <span id="totalMessages" class="text-[#00a884]">0</span>
-                        </div>
-                        <div class="p-4 flex justify-between items-center">
-                            <span class="font-semibold">Status</span>
-                            <span id="connectionStatus" class="text-[#00a884]">Connected</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Chat Content Area -->
-                <div class="flex-grow flex flex-col">
-                    <!-- Selected Chat Header -->
-                    <div id="selectedChatHeader" class="p-4 bg-[#f0f2f5] border-b border-gray-200">
-                        <div class="flex items-center">
-                            <div class="flex-1">
-                                <h2 id="selectedChatName" class="font-semibold">Select a chat</h2>
-                                <p id="selectedChatStatus" class="text-sm text-gray-500"></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Messages Area -->
-                    <div id="messages" class="flex-1 p-4 overflow-y-auto bg-[#efeae2] space-y-2">
-                        <!-- Messages will be inserted here -->
-                    </div>
-
-                    <!-- Message Input Area -->
-                    <div class="p-4 bg-[#f0f2f5] border-t border-gray-200">
-                        <form id="messageForm" class="space-y-4">
-                            <input type="text" id="number" placeholder="Phone Number: 6281234567890" 
-                                   class="input input-bordered w-full text-sm" required>
-                            <div class="flex gap-2">
-                                <textarea id="message" placeholder="Type a message" 
-                                          class="textarea textarea-bordered flex-grow text-sm" required></textarea>
-                                <button type="submit" class="bg-[#00a884] text-white px-6 py-2 rounded-full">
-                                    Send
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<body>
+    <div id="root"></div>
+    <script src="/js/bundle.js"></script>
 </body>
-</html> 
+</html>
