@@ -14,14 +14,14 @@ A real-time WhatsApp message monitoring dashboard built on node.js using whatsap
 - **Frontend**:
   - HTML5
   - Tailwind CSS for styling
-  - JavaScript (Vanilla) for interactivity
+  - React JS for interactivity
   - WebSocket for real-time updates
 
 - **Backend**:
   - Node.js
   - Express.js
   - WhatsApp Web.js
-  - WebSocket Server
+  - Socket.io
 
 - **UI Components**:
   - DaisyUI for enhanced UI components
@@ -30,13 +30,14 @@ A real-time WhatsApp message monitoring dashboard built on node.js using whatsap
 ## 🎯 Technical Highlights
 
 - **Real-time Updates**: WebSocket implementation for instant message updates
-- **Efficient Message Handling**: Smart message queue system with a 100-message display limit
-- **Security**: HTML escaping for safe message rendering
 - **Modern CSS**: Utilization of Tailwind CSS for maintainable styling
 
 ## 🛠️ Getting Started
 
 1. Clone the repository
+   ```bash
+   git clone https://github.com/agussuwerdo/wa-bot.git
+   ```
 2. Install dependencies:
    ```bash
    npm install
@@ -45,7 +46,11 @@ A real-time WhatsApp message monitoring dashboard built on node.js using whatsap
    ```bash
    npm run build
    ```
-4. Start the development server:
+3. Setup the environment
+   ```bash
+   cp .env.sample .env
+   ```
+5. Start the development server:
    ```bash
    npm run dev
    ```
@@ -54,9 +59,7 @@ A real-time WhatsApp message monitoring dashboard built on node.js using whatsap
 
 Create a `.env` file in the root directory with the following variables:
 ```
-env
 PORT=3000
-NODE_ENV=development
 ```
 
 - **Frontend Development**
@@ -76,7 +79,7 @@ NODE_ENV=development
 ## 🙏 Acknowledgments
 
 - [whatsapp-web.js](https://github.com/pedroslopez/whatsapp-web.js) - The excellent WhatsApp client library that powers this project's core functionality
-- Built with [Node.js](https://nodejs.org/) and [Express.js](https://expressjs.com/)
+- Built with [Node.js](https://nodejs.org/), [Express.js](https://expressjs.com/), and [Socket.io](https://socket.io/)
 
 ## 📝 License
 
